@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block body%}
+
+<style>
+    ul{
+        list-style-type:none;
+        padding-left:0;
+    }
+    #task{
+        width: 30%;
+        box-shadow: none;
+    }
+    #task:active, #task:hover{
+        box-shadow: 0 0 5px black;
+    }
+    .taskname{
+        font-size: 20px;
+    }
+    .head{
+        font-size: 25px;
+    }
+
+</style>
+
+{% if tasks.count()>0 %}
+    <p class='head'>Hi {{name}}! You have {{tasks.count()}} tasks listed: </p>
+{% else %}
+    <p class='head'>Hi {{name}}! Sorry, you have no tasks listed :(</p>
+{% endif %}
+
+
+<ul>
+{% for task in tasks %}
+    <div id="task">
+        <li class='taskname'>{{task.name}}</li>
+        <li>Priority: {{task.priority}}</li> 
+        <li><a href="{{url_for('delTask', task_id = task.id, user_id=task.user_id)}}" >Delete</a></li>
+        </br>
+    </div>
+{% endfor %}
+</ul>
+
+<div>
+    <a href = "{{url_for('addTask')}}">Add Task</a>
+</div>
+{% endblock %}

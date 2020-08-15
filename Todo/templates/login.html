@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+        <meta name="google-signin-client_id" content="835646137382-fc7lldt05t73gmeh1ejotdudu246ic11.apps.googleusercontent.com">
+
+        <title>Task10</title>
+        <style>
+            body{
+                background: beige;
+            }
+            #outer{
+                position: absolute;
+                left: 30%;
+                top: 30%;
+                width: 40%;
+            }
+            #box{
+                width: 100%;
+                border: 3px solid black;
+                text-align: center;
+                margin-bottom: 5px;
+            }
+            #e1{
+                font-size: 40px;
+            }
+            #e2{
+                font-size: 30px;
+            }
+            #signinButton{
+                width: 100%;
+            }
+            .g-signin2 > div{
+                margin: 0 auto;
+            }
+            #signout{
+                /* display: none; */
+            }
+        </style>
+    </head>
+    <body>
+        <div id="outer">
+            <div id="box">
+                <p id="e1">Hi</p>
+                <p id="e2">Welcome to Task-10. Track your tasks, prioritize, and stay up to date.</p>
+            </div>
+            <div id="signinButton"
+                class="g-signin2"
+                data-client_id="835646137382-fc7lldt05t73gmeh1ejotdudu246ic11.apps.googleusercontent.com" 
+                data-onsuccess="onSignIn"
+                data-theme="light"
+                data-longtitle="true">
+            </div>
+            <div>
+                </br>
+                <button id = "signout" onclick="signOut()">SignOut</button>
+            </div>
+        </div>
+        
+        <script>
+            function onSignIn(googleUser){
+                var profile = googleUser.getBasicProfile();
+                console.log('ID: ' + profile.getId());
+                console.log('Name: ' + profile.getName());
+                console.log('Image URL: ' + profile.getImageUrl());
+                console.log('Email: ' + profile.getEmail());
+
+                var data={id:profile.getId(), name:profile.getName()}
+                console.log(data)
+                console.log(profile)
+
+                var id_token = googleUser.getAuthResponse().id_token;
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/gconnect?state={{STATE}}');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                        console.log('Signed in as: ' + xhr.responseText);
+                    };
+                xhr.send('idtoken=' + id_token);
+                // setTimeout(function(){
+                //     window.location.href = 'http://localhost:5000';
+                // }, 4000);
+            }
+            function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                console.log('User signed out.');
+                window.location.href = "http://localhost:5000/logout";
+                });
+            }
+        </script>
+    </body>
+</html>

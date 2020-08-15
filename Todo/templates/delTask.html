@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block body%}
+
+    <h3> You are going to delete <strong>{{task.name}}</strong> from your tasks list. Are you sure? </h3>
+
+    <form action="{{ url_for('delTask',task_id = task.id, user_id=task.user_id)}}" method = 'post'>
+
+    <input type='submit', value = 'Delete'>
+
+    </form>
+
+    <a href = "{{url_for('showTasks')}}"> Cancel </a>
+
+    {% endblock %}

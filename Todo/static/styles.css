@@ -1,0 +1,21 @@
+body {
+    background-color:beige;
+}
+
+#e1{
+    position: fixed;
+    top: 10px;
+    left: 10px;
+}
+
+#e2{
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+
+#hr{
+    position: fixed;
+    top: 15px;
+    color: black;
+}

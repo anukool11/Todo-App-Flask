@@ -1,0 +1,85 @@
+<html>
+<head>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+	<meta name="google-signin-client_id" content="835646137382-fc7lldt05t73gmeh1ejotdudu246ic11.apps.googleusercontent.com">
+
+	<title>Task10</title>
+	<style>
+		body{
+			background: beige;
+		}
+		#head{
+			width: 100%;
+		}
+		#title{
+			font-size: 30px;
+			width: 100%;
+		}
+		#signout{
+			float: right;
+			top: 50%;
+		}
+		#hr{
+			height: 2px;
+			background-color: black;
+			margin: 0px;
+		}
+		#signinButton{
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<script>
+		function onSignIn(googleUser){
+			var profile = googleUser.getBasicProfile();
+			console.log('ID: ' + profile.getId());
+			console.log('Name: ' + profile.getName());
+			console.log('Image URL: ' + profile.getImageUrl());
+			console.log('Email: ' + profile.getEmail());
+
+			var data={id:profile.getId(), name:profile.getName()}
+			console.log(data)
+			console.log(profile)
+
+			var id_token = googleUser.getAuthResponse().id_token;
+
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/gconnect?state={{STATE}}');
+			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xhr.onload = function() {
+					console.log('Signed in as: ' + xhr.responseText);
+				};
+			xhr.send('idtoken=' + id_token);
+		}
+		function signOut() {
+			var auth2 = gapi.auth2.getAuthInstance();
+			auth2.signOut().then(function () {
+			console.log('User signed out.');
+			window.location.href = "http://localhost:5000/logout";
+			});
+		}
+	</script>
+
+	<div id="signinButton"
+		class="g-signin2"
+		data-client_id="835646137382-fc7lldt05t73gmeh1ejotdudu246ic11.apps.googleusercontent.com" 
+		data-onsuccess="onSignIn"
+		data-theme="light"
+		data-longtitle="true">
+	</div>
+
+	<div id = "head">
+		<div id = "title">Task-10
+			<button id="signout" onclick="signOut()">Sign Out</button>
+			<hr id="hr">
+		</div>
+		{% block body %}
+		{% endblock %}
+	</div>
+
+</body>
+
+</html>
